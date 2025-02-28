@@ -25,7 +25,7 @@ larrow=$(tmux_get '@tmux_power_left_arrow_icon' '')
 upload_speed_icon=$(tmux_get '@tmux_power_upload_speed_icon' '󰕒')
 download_speed_icon=$(tmux_get '@tmux_power_download_speed_icon' '󰇚')
 session_icon="$(tmux_get '@tmux_power_session_icon' '')"
-user_icon="$(tmux_get '@tmux_power_user_icon' '')"
+user_icon="$(tmux_get '@tmux_power_user_icon' '')"
 time_icon="$(tmux_get '@tmux_power_time_icon' '')"
 date_icon="$(tmux_get '@tmux_power_date_icon' '')"
 show_user="$(tmux_get @tmux_power_show_user true)"
@@ -98,24 +98,13 @@ tmux_set status-left-length 150
 
 # user@host
 if "$show_user" && "$show_host"; then
-    LS="#[fg=$G0,bg=$TC,bold] $user_icon $(whoami)@#h #[fg=$TC,bg=$G2,nobold]$rarrow"
+    LS="#[fg=$G0,bg=$TC,bold] $user_icon #{pane_current_path} #[fg=$TC,bg=$G0,nobold]$rarrow"
 elif "$show_user"; then
     LS="#[fg=$G0,bg=$TC,bold] $user_icon $(whoami) #[fg=$TC,bg=$G2,nobold]$rarrow"
 elif "$show_host"; then
     LS="#[fg=$G0,bg=$TC,bold] #h #[fg=$TC,bg=$G2,nobold]$rarrow"
 fi
 
-# session
-if "$show_session"; then
-    LS="$LS#[fg=$TC,bg=$G2] $session_icon #S "
-fi
-
-# upload speed
-if "$show_upload_speed"; then
-    LS="$LS#[fg=$G2,bg=$G1]$rarrow#[fg=$TC,bg=$G1] $upload_speed_icon #{upload_speed} #[fg=$G1,bg=$G0]$rarrow"
-else
-    LS="$LS#[fg=$G2,bg=$G0]$rarrow"
-fi
 if [[ $prefix_highlight_pos == 'L' || $prefix_highlight_pos == 'LR' ]]; then
     LS="$LS#{prefix_highlight}"
 fi
@@ -124,7 +113,7 @@ tmux_set status-left "$LS"
 # Right side of status bar
 tmux_set status-right-bg "$G0"
 tmux_set status-right-length 150
-RS="#[fg=$G2]$larrow#[fg=$TC,bg=$G2] $time_icon $time_format #[fg=$TC,bg=$G2]$larrow#[fg=$G0,bg=$TC] $date_icon $date_format "
+RS="#[fg=$G2]$larrow#[fg=$TC,bg=$G2] $session_icon #S "
 if "$show_download_speed"; then
     RS="#[fg=$G1,bg=$G0]$larrow#[fg=$TC,bg=$G1] $download_speed_icon #{download_speed} $RS"
 fi
